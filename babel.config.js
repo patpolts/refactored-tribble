@@ -18,6 +18,7 @@ module.exports = {
                 "@repositories": "./src/repositories",
                 "@config": "./src/config",
                 "@strategies": "./src/strategies",
+                "@enviroments": "./src/enviroments"
             }
         }]
     ],
