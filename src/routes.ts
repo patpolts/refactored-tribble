@@ -1,9 +1,7 @@
 import { Router } from "express";
 import { createUserController } from "@strategies/CreateUser"; 
-import { RequestUseCaseController } from "@strategies/ApiUseCases/RequestsUseCase/RequestUseCaseController";
-import { ConsultaPedidoController } from "@strategies/kruzer/consultaPedido"
-import  {GetPedidosController}  from "@strategies/kruzer/getPedidos/GetPedidosController"; 
-import { GetPedidosCase } from "@strategies/kruzer/getPedidos/GetPedidosCase";
+import { RequestUseCaseController } from "@strategies/ApiUseCases/RequestsUseCase/RequestUseCaseController"; 
+import { ordersDocumentController } from "@strategies/kruzer/KruzerGetOrderDocumentStrategy";
 
 const router = Router()
 
@@ -14,15 +12,20 @@ router.all('/', (request, response) => {
 router.all('/users', (request, response) => {
   return createUserController.handle( request, response );
 });
-router.all('/document/:document', (request, response) => {
-  const consult = new  ConsultaPedidoController();
 
-  return consult.handle( request, response );
-});
+/**
+ * APIs  Kruzer
+ * -----------
+ * 
+ */
 
-router.all('/kruzer/pedidos/document/:document', (request, response) => {  
-  const crtl = new GetPedidosController();
-  return crtl.handle(request,response);
+/** #Consulta pedido na kruzer (mysql) por numero documento e retorna json
+ * > GET: /kruzer/pedidosDocumento/${numero_documento_obrigatorio}/${numero_pedido_opicional}
+ * @params documento, pedidoId
+ * @returns
+ */
+router.all('/kruzer/pedidosDocumento/:documento/:pedidoId?', (request, response) => {  
+  return ordersDocumentController.handle(request,response);
 });
 
 export { router }
