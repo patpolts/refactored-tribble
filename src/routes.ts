@@ -2,16 +2,17 @@ import { Router } from "express";
 import { createUserController } from "@strategies/CreateUser"; 
 import { RequestUseCaseController } from "@strategies/ApiUseCases/RequestsUseCase/RequestUseCaseController"; 
 import { ordersDocumentController } from "@strategies/kruzer/KruzerGetOrderDocumentStrategy";
-
+import { CreateUserApiStrategy } from "@strategies/createUserApi/CreateUserApiStrategy";
+import {createUserApiController } from '@strategies/createUserApi';
 const router = Router()
 
 router.all('/', (request, response) => {
   const requestUseCaseController = new RequestUseCaseController();
   return requestUseCaseController.handle(request,response);
 });
-// router.all('/users', (request, response) => {
-//   return createUserController.handle( request, response );
-// });
+router.all('/users', (request, response) => {
+  return createUserApiController.handle( request, response );
+});
 
 /**
  * APIs  Kruzer
