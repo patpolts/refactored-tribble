@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
     "bluebird": "^3.7.2",
     "cookie-parser": "~1.4.4",
@@ -40,6 +41,7 @@
     "@types/morgan": "^1.9.3",
     "@types/mysql": "^2.15.20",
     "@types/nodemailer": "^6.4.4",
+    "@types/bcrypt": "^5.0.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "jest": "^27.4.7",
     "ts-jest": "^27.1.3",
