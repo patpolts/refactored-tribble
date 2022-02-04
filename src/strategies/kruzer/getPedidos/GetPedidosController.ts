@@ -1,12 +1,10 @@
+import {IKruzerOrderRepository} from '@repositories/IKruzerOrderRepository';
 import { Request, Response } from "express";
 import { GetPedidosCase } from "./GetPedidosCase";
+import { sequelize } from "@config/mysqlDB";
 
-export class GetPedidosController{
-    private getPedidosCase; 
-    constructor( 
-    ){   
-        this.getPedidosCase = GetPedidosCase;
-     }
+export class GetPedidosController{  
+    constructor(){ }
 
     async handle(req: Request, res: Response){
         //TODO:
@@ -47,6 +45,17 @@ export class GetPedidosController{
         //TODO: 
         // * Validar cpf
         const cpf = req.params.document;
-        return await this.getPedidosCase.execute(cpf);
+        return await this.getByDocument(cpf); 
+    }
+    async getByDocument(document: string){ 
+        //TODO:
+        // * validar parametro documento
+        // * adicionar orderBy dinamico
+        return new Promise(async (resolve,reject) => {
+            const result = await sequelize.query(`SELECT codigoPedido, dataPedido, statusDescription FROM positiva_db.kruzerOrders  WHERE cliente_cpf_cnpj LIKE ${document} ORDER BY dataPedido DESC;`)
+            .catch((e) => reject(new Error(e)));
+            resolve(result);
+        });
+        
     }
 }
