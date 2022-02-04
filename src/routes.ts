@@ -4,13 +4,25 @@ import { RequestUseCaseController } from "@strategies/ApiUseCases/RequestsUseCas
 import { ordersDocumentController } from "@strategies/kruzer/KruzerGetOrderDocumentStrategy";
 import { CreateUserApiStrategy } from "@strategies/createUserApi/CreateUserApiStrategy";
 import {createUserApiController } from '@strategies/createUserApi';
-const router = Router()
+import { MongoUsersRepository } from "@repositories/implementations/MongoUsersRepository";
+const router = Router();
+
+export const verifyToken = async (req,res,next) => {
+  const token = req.headers['x-access-token'];
+  if(!token){
+    res.status(501).json({status: "unauthorize", message: "token inválido"}).end();
+  }
+  const usersRepository = new MongoUsersRepository();
+  const checkToken = usersRepository.findByToken(token);
+  checkToken ? next(): res.status(401).json({status: "error", message: "Erro inesperado"}).end();
+}
 
 router.all('/', (request, response) => {
   const requestUseCaseController = new RequestUseCaseController();
   return requestUseCaseController.handle(request,response);
 });
-router.all('/users', (request, response) => {
+
+router.all('/users',verifyToken, (request, response) => {
   return createUserApiController.handle( request, response );
 });
 
@@ -25,7 +37,7 @@ router.all('/users', (request, response) => {
  * @params documento, pedidoId
  * @returns
  */
-router.all('/kruzer/pedidosDocumento/:documento/:pedidoId?', (request, response) => {  
+router.all('/kruzer/pedidosDocumento/:documento/:pedidoId?',verifyToken, (request, response) => {  
   return ordersDocumentController.handle(request,response);
 });
 

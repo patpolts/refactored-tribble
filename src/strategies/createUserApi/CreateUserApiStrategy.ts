@@ -12,6 +12,8 @@ export class CreateUserApiStrategy {
 
     const user = new User(data);
     
-    return await this.usersRepository.save(user); 
+    const saved = await this.usersRepository.save(user); 
+
+    return {response: saved}
   }
 }

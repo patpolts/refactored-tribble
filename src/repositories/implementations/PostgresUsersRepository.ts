@@ -1,7 +1,7 @@
 import { IUsersRepository } from "../IUsersRepository";
 import { User } from "@entities/User";
 
-export class PostgresUsersRepository implements IUsersRepository {
+export class PostgresUsersRepository  {
   private users: User[] = [];
 
   async findByEmail(email: string): Promise<User> {

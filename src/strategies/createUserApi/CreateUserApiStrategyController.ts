@@ -10,13 +10,14 @@ export class CreateUserApiStrategyController {
   //# handle all request to /users
   async handle(req: Request, res: Response):Promise<void> {
     let response = null;
-    let status = 201;
+    let status = 201; 
     try {
         switch (req.method) {
             case 'GET':
                 response = "users api"
                 break;
             case 'POST':
+                
                 response = await this.post(req);
                 break;
             default:
@@ -31,20 +32,24 @@ export class CreateUserApiStrategyController {
             errors: error,
             message: error.message || "Erro inesperado!"
         };  
-        return res.status(401).json(response).end(); 
+         res.status(401).json(response).end(); 
     } finally{ 
-        return res.status(status).json(response).end(); 
+         res.status(status).json(response).end(); 
     } 
   }
 
   async post(req){
     const { name, email, password } = req.body; 
     const encryptedUserPassword = await bcrypt.hash(password, 10);
-    const createUser = this.createUserApiStrategy.execute({
+    const createUser = await this.createUserApiStrategy.execute({
         name: name,
         email: email,
-        password: encryptedUserPassword
+        password: encryptedUserPassword,
+        token: null
     });
-    return createUser;
+    return {
+        status: "ok",
+        data: createUser
+    };
   }
 }
