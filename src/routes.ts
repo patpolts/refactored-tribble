@@ -2,6 +2,7 @@ import { Router } from "express";
 import { createUserController } from "@strategies/CreateUser"; 
 import { RequestUseCaseController } from "@strategies/ApiUseCases/RequestsUseCase/RequestUseCaseController"; 
 import { ordersDocumentController } from "@strategies/kruzer/KruzerGetOrderDocumentStrategy";
+import { ordersIdPedidoController } from "@strategies/kruzer/KruzerGetOrderIdPedidoStrategy";
 import { CreateUserApiStrategy } from "@strategies/createUserApi/CreateUserApiStrategy";
 import {createUserApiController } from '@strategies/createUserApi';
 import { MongoUsersRepository } from "@repositories/implementations/MongoUsersRepository";
@@ -37,8 +38,17 @@ router.all('/users',verifyToken, (request, response) => {
  * @params documento, pedidoId
  * @returns
  */
-router.all('/kruzer/pedidosDocumento/:documento/:pedidoId?',verifyToken, (request, response) => {  
+router.all('/kruzer/pedidosDocumento/:documento',verifyToken, (request, response) => {  
   return ordersDocumentController.handle(request,response);
+});
+
+/** #Consulta pedido na kruzer (mysql) por numero documento e retorna json
+ * > GET: /kruzer/pedidosDocumento/${numero_documento_obrigatorio}/${numero_pedido_opicional}
+ * @params documento, pedidoId
+ * @returns
+ */
+ router.all('/kruzer/pedidosDocumento/:documento/:idPedido?',verifyToken, (request, response) => {  
+  return ordersIdPedidoController.handle(request,response);
 });
 
 export { router }
