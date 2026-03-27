@@ -22,7 +22,7 @@
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
-    "nodemailer": "^6.4.10",
+    "nodemailer": "^8.0.4",
     "sequelize": "^6.15.0",
     "uuidv4": "^6.2.0"
   },
